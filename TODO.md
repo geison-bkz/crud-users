@@ -1,11 +1,11 @@
 ```
 > Feature User
--- Model user ( nome, email, password, data de criação, data de alteração )
+-- Model user ( nome, email, password, data de criação, data de alteração ) - OK
  
 -- Crud user
  
 -- Create
---- Nome ( opcional ), Email e password devem ser obrigatórios
+--- Nome ( opcional ), Email e password devem ser obrigatórios - OK
 --- Id deve ser criado com uuid
 --- Os usuários devem conter emails únicos
 --- Password deve ser encriptado
