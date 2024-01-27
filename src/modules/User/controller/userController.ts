@@ -6,6 +6,7 @@ import { userService } from '../service/userService';
 class UserController {
     public async create(req: Request, res: Response) {
         const { name, email, password } = req.body;
+
         try {
             const zUserSchema = z.object({
                 name: z.string().optional(),
@@ -20,7 +21,16 @@ class UserController {
             });
         }
 
-        await userService.create(name, email, password);
+        try {
+            return res.json({
+                message: `Usuário criado com sucesso`,
+                data: await userService.create(name, email, password),
+            });
+        } catch (err: any) {
+            return res.status(409).json({
+                message: err.message,
+            });
+        }
     }
 }
 
