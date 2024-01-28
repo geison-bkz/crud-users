@@ -31,6 +31,25 @@ class UserService {
 
         return create;
     }
+
+    public async read(paramsId: string) {
+        const findUser = await prismaConnect.user.findUnique({
+            where: {
+                id: paramsId,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            },
+        });
+
+        if (!findUser) {
+            throw new Error('Dados não encontrados.');
+        }
+
+        return findUser;
+    }
 }
 
 export const userService = new UserService();

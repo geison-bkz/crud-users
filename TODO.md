@@ -14,9 +14,9 @@
 ---- assets/files/:id - OK
  
 -- Read
---- Uuid é obrigatório para efetuar a leitura
---- Leitura do usuário deve ser feita pelo uuid
---- Não teremos o read all ou list all
+--- Uuid é obrigatório para efetuar a leitura - OK
+--- Leitura do usuário deve ser feita pelo uuid - OK
+--- Não teremos o read all ou list all - OK
  
 --- Débitos Técnicos
 --- Autorização: só pode acessar a rota Logado
