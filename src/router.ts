@@ -1,4 +1,4 @@
-import { authRouter } from './modules/Auth/auth.router';
-import { userRouter } from './modules/User/user.router';
+import { authRouter } from './modules/Auth/authRouter';
+import { userRouter } from './modules/User/userRouter';
 
 export const router = [userRouter, authRouter];
