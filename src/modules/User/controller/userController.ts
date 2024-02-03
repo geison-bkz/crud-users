@@ -57,6 +57,58 @@ class UserController {
             });
         }
     }
+
+    public async update(req: Request, res: Response) {
+        const paramsId = req.params.id;
+        const { name } = req.body;
+
+        try {
+            const zUserSchema = z.object({
+                paramsId: z.string().min(30, { message: 'Id é obrigatorio.' }),
+                name: z.string().min(1, { message: 'Nome é obrigatorio.' }),
+            });
+            zUserSchema.parse({ paramsId, name });
+        } catch (err: any) {
+            return res.status(400).json({
+                message: 'Dados inválidos',
+                error: err.errors,
+            });
+        }
+
+        try {
+            return res.json({
+                message: 'Atualizado com sucesso!',
+                data: await userService.update(paramsId, name),
+            });
+        } catch (err: any) {
+            return res.status(404).json({
+                error: err.message,
+            });
+        }
+    }
+
+    public async delete(req: Request, res: Response) {
+        const paramsId = req.params.id;
+
+        try {
+            const zUserSchema = z.string().min(30, { message: 'Id é obrigatorio.' });
+            zUserSchema.parse(paramsId);
+        } catch (err: any) {
+            return res.status(400).json({
+                message: 'Dados inválidos',
+                error: err.errors,
+            });
+        }
+
+        try {
+            await userService.delete(paramsId);
+            return res.json({ message: 'Deletado com sucesso!' });
+        } catch (err: any) {
+            return res.status(404).json({
+                error: err.message,
+            });
+        }
+    }
 }
 
 export const userContoller = new UserController();

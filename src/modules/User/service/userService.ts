@@ -50,6 +50,48 @@ class UserService {
 
         return findUser;
     }
+
+    public async update(paramsId: string, name: string) {
+        const findUser = await prismaConnect.user.findUnique({
+            where: {
+                id: paramsId,
+            },
+        });
+
+        if (!findUser) {
+            throw new Error('Dados não encontrados.');
+        }
+
+        const update = await prismaConnect.user.update({
+            where: {
+                id: paramsId,
+            },
+            data: {
+                name,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            },
+        });
+
+        return update;
+    }
+
+    public async delete(paramsId: string) {
+        try {
+            UtilsFileUser.deleteFolderUser(paramsId);
+
+            return await prismaConnect.user.delete({
+                where: {
+                    id: paramsId,
+                },
+            });
+        } catch (err) {
+            throw new Error('Dados não encontrados.');
+        }
+    }
 }
 
 export const userService = new UserService();
