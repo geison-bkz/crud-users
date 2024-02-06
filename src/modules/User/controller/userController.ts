@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import { userService } from '../service/userService';
+import { EZod } from '../../../enum/zodEnum';
+import { ECrud } from '../../../enum/crudEnum';
 
 class UserController {
     public async create(req: Request, res: Response) {
@@ -10,20 +12,20 @@ class UserController {
         try {
             const zUserSchema = z.object({
                 name: z.string().optional(),
-                email: z.string().email({ message: 'E-mail é obrigatório.' }),
-                password: z.string().min(8, { message: 'Senha é obrigatório.' }),
+                email: z.string().email({ message: `E-mail ${EZod.REQUIRED}` }),
+                password: z.string().min(8, { message: `Senha ${EZod.REQUIRED}` }),
             });
             zUserSchema.parse({ name, email, password });
         } catch (err: any) {
             return res.status(400).json({
-                message: 'Dados inválido',
+                message: EZod.INVALID_DATA,
                 error: err.errors,
             });
         }
 
         try {
             return res.json({
-                message: `Usuário criado com sucesso`,
+                message: ECrud.CREATE,
                 data: await userService.create(name, email, password),
             });
         } catch (err: any) {
@@ -37,18 +39,18 @@ class UserController {
         const paramsId = req.params.id;
 
         try {
-            const zUserSchema = z.string().min(30, { message: 'ID é obrigatório.' });
+            const zUserSchema = z.string().min(30, { message: `ID ${EZod.REQUIRED}` });
             zUserSchema.parse(paramsId);
         } catch (err: any) {
             return res.status(400).json({
-                message: 'Dados invalidos',
+                message: EZod.INVALID_DATA,
                 error: err.errors,
             });
         }
 
         try {
             return res.json({
-                message: 'Encontrado com sucesso.',
+                message: ECrud.READ,
                 data: await userService.read(paramsId),
             });
         } catch (err: any) {
@@ -64,20 +66,20 @@ class UserController {
 
         try {
             const zUserSchema = z.object({
-                paramsId: z.string().min(30, { message: 'Id é obrigatorio.' }),
-                name: z.string().min(1, { message: 'Nome é obrigatorio.' }),
+                paramsId: z.string().min(30, { message: `Id ${EZod.REQUIRED}` }),
+                name: z.string().min(1, { message: `Nome ${EZod.REQUIRED}` }),
             });
             zUserSchema.parse({ paramsId, name });
         } catch (err: any) {
             return res.status(400).json({
-                message: 'Dados inválidos',
+                message: EZod.INVALID_DATA,
                 error: err.errors,
             });
         }
 
         try {
             return res.json({
-                message: 'Atualizado com sucesso!',
+                message: ECrud.UPDATE,
                 data: await userService.update(paramsId, name),
             });
         } catch (err: any) {
@@ -91,18 +93,20 @@ class UserController {
         const paramsId = req.params.id;
 
         try {
-            const zUserSchema = z.string().min(30, { message: 'Id é obrigatorio.' });
+            const zUserSchema = z.string().min(30, { message: `Id ${EZod.REQUIRED}` });
             zUserSchema.parse(paramsId);
         } catch (err: any) {
             return res.status(400).json({
-                message: 'Dados inválidos',
+                message: EZod.INVALID_DATA,
                 error: err.errors,
             });
         }
 
         try {
             await userService.delete(paramsId);
-            return res.json({ message: 'Deletado com sucesso!' });
+            return res.json({
+                message: ECrud.DELETE,
+            });
         } catch (err: any) {
             return res.status(404).json({
                 error: err.message,
