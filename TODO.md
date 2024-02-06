@@ -23,19 +23,19 @@
 --- Não pode ler outro usuário
  
 -- Update
---- Uuid é obrigatório para efetuar a edição
---- A edição é somente para o name
+--- Uuid é obrigatório para efetuar a edição - OK
+--- A edição é somente para o name - OK
  
 --- Débitos Técnicos
 --- Autorização: só pode acessar a rota Logado
 --- Não pode editar outro usuário
  
 -- Delete
---- Todos os dados deste usuário devem ser deletados, como:
----- Arquivos
----- Dados no banco
----- Tudo relacionado a ele
----- OBS.: Caso você utilize esta ferramenta para venda, leia mais sobre LGPD
+--- Todos os dados deste usuário devem ser deletados, como: - OK
+---- Arquivos - OK
+---- Dados no banco - OK
+---- Tudo relacionado a ele - OK
+---- OBS.: Caso você utilize esta ferramenta para venda, leia mais sobre LGPD - OK
  
 --- Débitos Técnicos
 --- Autorização: só pode acessar a rota Logado

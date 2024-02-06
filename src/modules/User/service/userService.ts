@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { prismaConnect } from '../../../prismaConn';
 import { UtilsFileUser } from '../utils/utilsFileUser';
+import { EStatusErrors } from '../../../enum/statusErrorsEnum';
 
 class UserService {
     public async create(name: string, email: string, password: string) {
@@ -11,7 +12,7 @@ class UserService {
         });
 
         if (findUser) {
-            throw new Error(`Usuário já existente!`);
+            throw new Error(EStatusErrors.E409);
         }
 
         const create = await prismaConnect.user.create({
@@ -45,10 +46,52 @@ class UserService {
         });
 
         if (!findUser) {
-            throw new Error('Dados não encontrados.');
+            throw new Error(EStatusErrors.E404);
         }
 
         return findUser;
+    }
+
+    public async update(paramsId: string, name: string) {
+        const findUser = await prismaConnect.user.findUnique({
+            where: {
+                id: paramsId,
+            },
+        });
+
+        if (!findUser) {
+            throw new Error(EStatusErrors.E404);
+        }
+
+        const update = await prismaConnect.user.update({
+            where: {
+                id: paramsId,
+            },
+            data: {
+                name,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+            },
+        });
+
+        return update;
+    }
+
+    public async delete(paramsId: string) {
+        try {
+            UtilsFileUser.deleteFolderUser(paramsId);
+
+            return await prismaConnect.user.delete({
+                where: {
+                    id: paramsId,
+                },
+            });
+        } catch (err) {
+            throw new Error(EStatusErrors.E404);
+        }
     }
 }
 
