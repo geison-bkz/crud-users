@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
+import { z } from 'zod';
 
 class AuthController {
-    public read(req: Request, res: Response) {
-        return res.json({
-            data: 'Auth route',
-        });
-    }
+    public async login(req: Request, res: Response) {}
+    public async token(req: Request, res: Response) {}
 }
 
 export const authController = new AuthController();
