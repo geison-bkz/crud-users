@@ -42,7 +42,40 @@ class AuthController {
             }
         }
     }
-    public async token(req: Request, res: Response) {}
+    public async token(req: Request, res: Response) {
+        const token = req.headers['authorization'] || '';
+
+        try {
+            const ZAuthSchema = z.string().min(25, { message: `Token ${EZod.REQUIRED}` });
+
+            ZAuthSchema.parse(token);
+        } catch (err: any) {
+            return res.status(400).json({
+                message: EStatusErrors.E400,
+                error: err.errors,
+            });
+        }
+
+        try {
+            return res.json({
+                data: await authService.token(token),
+            });
+        } catch (err: any) {
+            switch (err.message) {
+                case EStatusErrors.E401:
+                    return res.status(401).json({
+                        message: err.message,
+                    });
+                    break;
+
+                case EStatusErrors.E404:
+                    return res.status(404).json({
+                        message: err.message,
+                    });
+                    break;
+            }
+        }
+    }
 }
 
 export const authController = new AuthController();

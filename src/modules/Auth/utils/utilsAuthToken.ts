@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export class UtilsAuthToken {
-    public static async jwtGenerate(userPayLoad: {
+    public static jwtGenerate(userPayLoad: {
         id: string;
         name: string | null;
         email: string;
@@ -10,13 +10,13 @@ export class UtilsAuthToken {
         const payload = userPayLoad;
         delete payload.password;
 
-        const acessToken = jwt.sign({ payload }, '70d2eb05509e80616008c2b09e7b444c', {
-            expiresIn: '15m',
+        const acessToken = jwt.sign({ payload }, `${process.env.JWT_SECRET}`, {
+            expiresIn: `${process.env.JWT_EXPIRES_IN}`,
         });
 
         const refreshToken = jwt.sign(
             { payload: { id: payload.id } },
-            '98b8e0906f31644a72cbbaf4fa343f0b',
+            `${process.env.JWT_REFRESH_TOKEN_SECRET}`,
         );
 
         return { acessToken, refreshToken };

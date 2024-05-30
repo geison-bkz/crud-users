@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { UtilsAuthToken } from '../utils/utilsAuthToken';
 import { EStatusErrors } from 'enum/statusErrorsEnum';
 import { prismaConnect } from 'prismaConn';
@@ -27,7 +28,34 @@ class AuthService {
 
         return UtilsAuthToken.jwtGenerate(findUser);
     }
-    public async token() {}
+
+    public async token(refresherToken: string) {
+        try {
+            await jwt.verify(refresherToken, `${process.env.JWT_REFRESH_TOKEN_SECRET}`);
+        } catch (error) {
+            throw new Error(EStatusErrors.E401);
+        }
+
+        const decode = ((await jwt.decode(refresherToken)) as { payload: { id: string } }).payload;
+
+        const findUser = await prismaConnect.user.findUnique({
+            where: {
+                id: decode.id,
+            },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                password: true,
+            },
+        });
+
+        if (!findUser) {
+            throw new Error(EStatusErrors.E404);
+        }
+
+        return UtilsAuthToken.jwtGenerate(findUser);
+    }
 }
 
 export const authService = new AuthService();
