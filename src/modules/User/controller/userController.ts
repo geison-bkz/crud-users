@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { userService } from '../service/userService';
 import { EZod } from '../../../enum/zodEnum';
 import { ECrud } from '../../../enum/crudEnum';
+import { EStatusErrors } from 'enum/statusErrorsEnum';
 
 class UserController {
     public async create(req: Request, res: Response) {
@@ -18,7 +19,7 @@ class UserController {
             zUserSchema.parse({ name, email, password });
         } catch (err: any) {
             return res.status(400).json({
-                message: EZod.INVALID_DATA,
+                message: EStatusErrors.E400,
                 error: err.errors,
             });
         }
@@ -43,7 +44,7 @@ class UserController {
             zUserSchema.parse(paramsId);
         } catch (err: any) {
             return res.status(400).json({
-                message: EZod.INVALID_DATA,
+                message: EStatusErrors.E400,
                 error: err.errors,
             });
         }
@@ -72,7 +73,7 @@ class UserController {
             zUserSchema.parse({ paramsId, name });
         } catch (err: any) {
             return res.status(400).json({
-                message: EZod.INVALID_DATA,
+                message: EStatusErrors.E400,
                 error: err.errors,
             });
         }
@@ -97,7 +98,7 @@ class UserController {
             zUserSchema.parse(paramsId);
         } catch (err: any) {
             return res.status(400).json({
-                message: EZod.INVALID_DATA,
+                message: EStatusErrors.E400,
                 error: err.errors,
             });
         }
