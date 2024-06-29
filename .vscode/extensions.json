@@ -1,7 +1,11 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next", 
+    "Prisma.prisma",
     "dbaeumer.vscode-eslint",
-    "ms-vscode.vscode-typescript-next"
+    "mhutchie.git-graph",
+    "eamodio.gitlens",
+    "PKief.material-icon-theme",
+    "esbenp.prettier-vscode"
   ]
 }
